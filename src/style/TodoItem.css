@@ -1,0 +1,50 @@
+:root {
+    --background: #1B676B;
+    --light-color: #EAFDE6;
+    --fuerte-color: #88C425;
+  }
+.todo-item {
+    height: 60px;
+    background-color: var(--light-color);
+    margin-top: 16px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.fecha {
+    font-size: 14px;
+    margin-left: 20px;
+    margin-top: 6px;
+}
+.icon-container {
+    width: 120px;
+    height: 40px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    /* border: 1px solid var(--background); */
+}
+
+.icon-check, .icon-edit, .icon-deleted {
+    width: 95%;
+    height: 40px;
+    border-radius: 4px;
+    text-align: center;
+    cursor: pointer;
+    color: white;
+}
+.icon-edit {
+    background-color: #11468F;
+}
+.icon-check {    
+    background-color: var(--fuerte-color);
+}
+.icon-deleted {
+    background-color: #DA1212;
+}
+
+.subrayar {
+    text-decoration: line-through;
+    color: gray;
+}

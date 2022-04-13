@@ -1,0 +1,26 @@
+:root {
+    --background: #1B676B;
+    --light-color: #EAFDE6;
+    --fuerte-color: #88C425;
+}
+.add-tarea {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--light-color);
+    text-align: center;
+    cursor: pointer;    
+    transform: rotate(0);
+    transition: .3s ease;
+}
+.add-tarea p {
+    font-size: 25px;
+    color: var(--fuerte-color);
+    font-weight: bold;
+}
+.add-tarea:hover {
+    transform: rotate(224deg);
+}

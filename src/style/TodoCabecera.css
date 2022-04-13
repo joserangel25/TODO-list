@@ -1,0 +1,17 @@
+:root {
+    --background: #1B676B;
+    --light-color: #EAFDE6;
+    --fuerte-color: #88C425;
+}
+.cabecera {
+    margin-bottom: 80px;
+    margin-left: 20px;
+}
+h2 {
+    color: var(--fuerte-color);
+    font-size: 36px;
+}
+.subtitulo {
+    color: var(--light-color);
+    font-weight: bold;
+}

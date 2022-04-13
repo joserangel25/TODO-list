@@ -1,0 +1,26 @@
+:root {
+  --background: #1B676B;
+  --light-color: #EAFDE6;
+  --fuerte-color: #88C425;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+html {
+}
+.App {
+  /* text-align: center; */
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--background);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+main {
+  width: 70%;
+}
