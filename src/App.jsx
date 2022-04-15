@@ -1,60 +1,60 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Search from './components/Search';
 import TodoCabecera from './components/TodoCabecera';
 import TodoContainer from './components/TodoContainer';
 import TodoItem from './components/TodoItem';
 import NuevaTarea from './components/NuevaTarea';
+import { useLocalStorage } from './hooks/useLocalStorage';
 import './App.css'
 
-/*
-const todosDefault = [
-  {
-      tarea: "Llamar al médico paraa que nos de la formula",
-      estado: false,
-      fecha: "10/12/2012",
-      id: 1
-  },
-  {
-      tarea: "Llamar al profesor paraa que nos de la tarea",
-      estado: false,
-      fecha: "08/08/2021",
-      id: 2
-  },
-  {
-      tarea: "Llamar al pintor paraa que vaya a pintar la casa",
-      estado: false,
-      fecha: "28/07/2022",
-      id: 3
-  }
 
-];
+/*
+function useLocalStorage (itemName, initialValue ) {
+  
+  //Utilizando localStorage
+  
+  const localStorageItem = localStorage.getItem(itemName);
+  let parsedItem;
+  
+  if(!localStorageItem) {
+    localStorage.setItem(itemName, JSON.stringify(initialValue));
+    parsedItem = [];
+  } else {
+    parsedItem = JSON.parse(localStorageItem);
+  }
+  
+  const [item, setItem] = useState(parsedItem);
+
+    //Persistiendo los datos con localStorage
+
+    const saveItem = (newItem) => {
+      const itemStringify = JSON.stringify(newItem);
+      localStorage.setItem(itemName, itemStringify);
+      setItem(newItem); 
+    }
+    return [
+      item,
+      saveItem,
+    ];
+}
 */
+
+
 
 function App() {
 
-  //Utilizando localStorage
-
-  const localStorageTodos = localStorage.getItem('TODOS_V1');
-  let parsedTodos;
-
-  if(!localStorageTodos) {
-    localStorage.setItem('TODOS_V1', JSON.stringify([]));
-    parsedTodos = [];
-  } else {
-    parsedTodos = JSON.parse(localStorageTodos);
-  }
-
-  //Persistiendo los datos con localStorage
-
-  const saveTodos = (newTodos) => {
-    const todosStringify = JSON.stringify(newTodos);
-    localStorage.setItem('TODOS_V1', todosStringify);
-    setTodos(newTodos); 
-  }
+ 
+  const {
+    item: todos,
+    setValue: saveTodos,
+    loading,
+    error,
+  } = useLocalStorage('TODOS_V1', []);
+  
 
   //Lista de tareas del TODOs con su Set
-  const [todos, setTodos] = useState(parsedTodos);
-  const todosCompletados = todos.filter(todo => todo.estado == true).length;
+ 
+  const todosCompletados = todos.filter(todo => todo.estado === true).length;
   const todosTotal = todos.length;  
 
   const completeTodo = (tarea) => {
@@ -99,8 +99,6 @@ function App() {
     });
   } 
 
-
-
   return (
     <div className="App">
       <header className="App-header">
@@ -114,6 +112,9 @@ function App() {
 
         {/* Cuerpo de la lista de los TODOs  */}
         <TodoContainer>
+          {error && <p>Desesperate, hubo un error...</p>}
+          {loading && <p>Estamos cargando, no desesperes...</p>}
+          {(!loading && !filtradoTodos.length) && <p>Crea tu primer TODO</p>}
           {filtradoTodos.map(todo => (
             <TodoItem 
                 key={todo.id} 
