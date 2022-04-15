@@ -6,6 +6,7 @@ import TodoItem from './components/TodoItem';
 import NuevaTarea from './components/NuevaTarea';
 import './App.css'
 
+/*
 const todosDefault = [
   {
       tarea: "Llamar al médico paraa que nos de la formula",
@@ -27,11 +28,32 @@ const todosDefault = [
   }
 
 ];
+*/
 
 function App() {
 
+  //Utilizando localStorage
+
+  const localStorageTodos = localStorage.getItem('TODOS_V1');
+  let parsedTodos;
+
+  if(!localStorageTodos) {
+    localStorage.setItem('TODOS_V1', JSON.stringify([]));
+    parsedTodos = [];
+  } else {
+    parsedTodos = JSON.parse(localStorageTodos);
+  }
+
+  //Persistiendo los datos con localStorage
+
+  const saveTodos = (newTodos) => {
+    const todosStringify = JSON.stringify(newTodos);
+    localStorage.setItem('TODOS_V1', todosStringify);
+    setTodos(newTodos); 
+  }
+
   //Lista de tareas del TODOs con su Set
-  const [todos, setTodos] = useState(todosDefault);
+  const [todos, setTodos] = useState(parsedTodos);
   const todosCompletados = todos.filter(todo => todo.estado == true).length;
   const todosTotal = todos.length;  
 
@@ -39,15 +61,17 @@ function App() {
     const todoIndex = todos.findIndex(todo => todo.tarea === tarea);
     const newTodos = [...todos];
     newTodos[todoIndex].estado = true;
-    setTodos(newTodos);
+    saveTodos(newTodos);
   }
+
+  
 
   //Editando el estado de la lista por si hubo un error
   const editTodo = (tarea) => {
     const todoIndex = todos.findIndex(todo => todo.tarea === tarea);
     const newTodos = [...todos];
     newTodos[todoIndex].estado = false;
-    setTodos(newTodos);
+    saveTodos(newTodos);
   }
 
   //Eliminar un elemento cuando se completa la tarea
@@ -57,7 +81,7 @@ function App() {
     const todoIndex= todos.findIndex(todo => todo.tarea === tarea);
     const newTodos = [...todos];
     newTodos.splice(todoIndex, 1);
-    setTodos(newTodos)
+    saveTodos(newTodos)
   }
 
   //Filtrando a través del input search
