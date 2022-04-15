@@ -1,11 +1,12 @@
 import React from 'react'
+
 import '../style/TodoCabecera.css'
 
-const TodoCabecera = ({ usserName }) => {
+const TodoCabecera = ({ usserName, todosTotal, todosCompletados }) => {
     return (
         <div className='cabecera'>
             <h2>Hola de nuevo {usserName}, bienvenido!</h2>
-            <p className='subtitulo'>Has completado 2 de 3 TODOs de la lista</p>
+            <p className='subtitulo'>Has completado {todosCompletados} de {todosTotal} TODOs de la lista</p>
         </div>
     );
 }
