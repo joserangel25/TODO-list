@@ -6,43 +6,18 @@ import TodoItem from './components/TodoItem';
 import NuevaTarea from './components/NuevaTarea';
 import { useLocalStorage } from './hooks/useLocalStorage';
 import './App.css'
+import { Modal } from './components/Modal';
 
-
-/*
-function useLocalStorage (itemName, initialValue ) {
-  
-  //Utilizando localStorage
-  
-  const localStorageItem = localStorage.getItem(itemName);
-  let parsedItem;
-  
-  if(!localStorageItem) {
-    localStorage.setItem(itemName, JSON.stringify(initialValue));
-    parsedItem = [];
-  } else {
-    parsedItem = JSON.parse(localStorageItem);
-  }
-  
-  const [item, setItem] = useState(parsedItem);
-
-    //Persistiendo los datos con localStorage
-
-    const saveItem = (newItem) => {
-      const itemStringify = JSON.stringify(newItem);
-      localStorage.setItem(itemName, itemStringify);
-      setItem(newItem); 
-    }
-    return [
-      item,
-      saveItem,
-    ];
+const newFecha = () => {
+  const date = new Date();
+  const [month, day, year] = [date.getMonth(), date.getDate(), date.getFullYear()];
+  return `${day}/${month + 1}/${year}`;
 }
-*/
-
-
 
 function App() {
 
+  const [ showModal, setShowModal ] = useState(false);
+  const [ textTarea, setTextTarea ] = useState('');
  
   const {
     item: todos,
@@ -51,9 +26,6 @@ function App() {
     error,
   } = useLocalStorage('TODOS_V1', []);
   
-
-  //Lista de tareas del TODOs con su Set
- 
   const todosCompletados = todos.filter(todo => todo.estado === true).length;
   const todosTotal = todos.length;  
 
@@ -75,13 +47,30 @@ function App() {
   }
 
   //Eliminar un elemento cuando se completa la tarea
-
   const deleteTodo = (tarea) => {
     console.log("ejecutando deleteTodo")
     const todoIndex= todos.findIndex(todo => todo.tarea === tarea);
     const newTodos = [...todos];
     newTodos.splice(todoIndex, 1);
     saveTodos(newTodos)
+  }
+
+  //Funcion para agregar una tarea nueva
+  const addTodo = () => {
+    if(!textTarea.length){
+        alert('Debe escribir algo en la descripcion')
+        return
+    }
+    const newTodo = {
+        tarea: textTarea,
+        estado: false,
+        fecha: newFecha(),
+        id: Date.now(),
+    };
+    const newTodos = [...todos, newTodo];
+    saveTodos(newTodos);
+    setTextTarea('');
+    setShowModal(false);
   }
 
   //Filtrando a través del input search
@@ -108,27 +97,36 @@ function App() {
         <TodoCabecera usserName="Jose" todosTotal={todosTotal} todosCompletados={todosCompletados}/>
 
         {/* Componente para realizar los filtros o busquedas */}
-        <Search searchValue={searchValue} setSearchValue={setSearchValue}/>
+        {
+          !showModal && !loading && !todosTotal == 0 &&  <Search searchValue={searchValue} setSearchValue={setSearchValue}/>
+        }
 
         {/* Cuerpo de la lista de los TODOs  */}
-        <TodoContainer>
-          {error && <p>Desesperate, hubo un error...</p>}
-          {loading && <p>Estamos cargando, no desesperes...</p>}
-          {(!loading && !filtradoTodos.length) && <p>Crea tu primer TODO</p>}
-          {filtradoTodos.map(todo => (
-            <TodoItem 
-                key={todo.id} 
-                tarea={todo.tarea} 
-                fecha={todo.fecha} 
-                todoEstado={todo.estado}
-                onComplete={()=> completeTodo(todo.tarea)}
-                onDelete={()=> deleteTodo(todo.tarea)}
-                onEdit={()=> editTodo(todo.tarea)}
-            />))}
-        </TodoContainer>
+        {
+          !showModal ?
+          <TodoContainer>
+            {error && <p>Desesperate, hubo un error...</p>}
+            {loading && <p>Estamos cargando, no desesperes...</p>}
+            {filtradoTodos.map(todo => (
+              <TodoItem 
+                  key={todo.id} 
+                  tarea={todo.tarea} 
+                  fecha={todo.fecha} 
+                  todoEstado={todo.estado}
+                  onComplete={()=> completeTodo(todo.tarea)}
+                  onDelete={()=> deleteTodo(todo.tarea)}
+                  onEdit={()=> editTodo(todo.tarea)}
+              />))}
+          </TodoContainer>
+          : <Modal 
+              setShowModal={setShowModal}
+              textTarea={textTarea}
+              setTextTarea={setTextTarea}
+              addTodo={addTodo} />
+        }
 
         {/* Boton para agregar nueva tarea y desplegar modal */}
-        <NuevaTarea />
+        <NuevaTarea setShowModal={setShowModal}/>
       </main>
     </div>
   )

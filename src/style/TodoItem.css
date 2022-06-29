@@ -19,10 +19,10 @@
     margin-top: 6px;
 }
 .icon-container {
-    width: 120px;
-    height: 40px;
+    width: 75px;
+    /* height: 40px; */
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
     /* border: 1px solid var(--background); */
 }
 
@@ -33,6 +33,7 @@
     text-align: center;
     cursor: pointer;
     color: white;
+    align-self: center;
 }
 .icon-edit {
     background-color: #11468F;
@@ -47,4 +48,7 @@
 .subrayar {
     text-decoration: line-through;
     color: gray;
+}
+.marginTop {
+    margin-top: 10px;
 }

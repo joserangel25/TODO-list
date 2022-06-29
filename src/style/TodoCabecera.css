@@ -4,8 +4,7 @@
     --fuerte-color: #88C425;
 }
 .cabecera {
-    margin-bottom: 80px;
-    margin-left: 20px;
+    margin-bottom: 30px;
 }
 h2 {
     color: var(--fuerte-color);

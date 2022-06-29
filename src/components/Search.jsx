@@ -1,18 +1,29 @@
 import React, { useState } from 'react';
+import '../style/Search.css'
 
 const Search = ( {searchValue, setSearchValue } ) => {
-
-    // const [searchValue, setSearchValue] = useState("");
 
     const usserFiltro = (e) => {
         // console.log(e.target.value);
         setSearchValue(e.target.value);
     }
     return (
-        <div>
-            <input type='text' placeholder='Filtrar' value={searchValue} onChange={usserFiltro}></input>
-            
+        <div className='container-search'>
+            <div className='search'>
+                <div>
+                <input 
+                    type='text' 
+                    placeholder='Search...' 
+                    value={searchValue} 
+                    onChange={usserFiltro} 
+                    className='searchInput'
+                    name=''
+                    required
+                    />
+                </div>
+            </div>
         </div>
+        
     );
 }
 
